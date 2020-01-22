@@ -24,7 +24,7 @@ class spirale3:
             # Open a telnet session with the Chamber                                   
             self.session = telnetlib.Telnet(self.HOST,self.PORT)
         except IOError as socket_error:
-            print("Connection could not be established.")
+            print("Connection could not be established. Checking IP address.")
             print(socket_error)
         except Exception as e:
             print(e)
@@ -68,7 +68,7 @@ class spirale3:
     def startChamber(self):
         """
 
-        Function that starts the chamber.
+        Function that starts the chamber. Returns string with confirmation message from chamber
 
         """
         try:
@@ -88,7 +88,7 @@ class spirale3:
             
     def stopChamber(self):
         """
-        Function that stops the chamber.
+        Function that stops the chamber. Returns string with confirmation message from chamber
         """
         try:
             print('Turning off Environmental Chamber....\n')
@@ -120,6 +120,8 @@ class spirale3:
         - To end test without saving the test records to the chamber's local 
         memory:
         mychamber.cancelTest(0)
+
+        Returns string with confirmation message from chamber
         
         
         """
@@ -151,7 +153,7 @@ class spirale3:
             temperature = self.chamber_temp.decode('UTF-8')
             #Only keep the the temperature data     
             temperature = temperature[temperature.find('=')+1:temperature.find('\r')-1]
-            print('Current Chamber Temperature is: '+temperature)
+            
             return float(temperature)
 
         except Exception as e:
@@ -171,6 +173,8 @@ class spirale3:
         5 minutes = 300 seconds.
 
         mychamber.setTemperature(25,300)
+
+        Returns string with confirmation message from chamber
 
         """
         self.setPoint = str(setPoint)+'>'+str(period)
@@ -218,6 +222,7 @@ class spirale3:
 
         Usage is similar to setTemperature.
 
+        Returns string with confirmation message from chamber
         """
         self.setPoint = str(setPoint)+'>'+str(period)
         print('Setting Environmental Chamber to: '+self.setPoint)
