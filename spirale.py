@@ -16,13 +16,14 @@ class spirale3:
         
     def __init__(self, HOST='10.8.88.121', PORT='888'):
         """Initialise chamber IP and Port"""
+
         # Environmental Chamber Static Assigned IP
         self.HOST= HOST
         # Environmental Chamber Telnet Port                                 
         self.PORT= PORT           
     
     def initChamber(self, profile = 'Manual-Mode'):
-        """ A function used to set the chamber profile.
+        """ Set the chamber profile.
         
         The default setting selects Manual-Mode which allows you to change the 
         temperature settings over the network. 
@@ -38,6 +39,7 @@ class spirale3:
         mychamber.initChamber("Noise diode stability")
 
         """
+
         try:
             # Create telnet session
             self.session = telnetlib.Telnet(self.HOST,self.PORT)
@@ -68,10 +70,12 @@ class spirale3:
             
     def startChamber(self):
         """
+        Starts the chamber
 
-        Function that starts the chamber. Returns string with confirmation message from chamber
+        Returns string with confirmation message from chamber
 
         """
+
         try:
             print('Turning on Environmental Chamber....\n')
             # Create telnet session
@@ -96,8 +100,11 @@ class spirale3:
             
     def stopChamber(self):
         """
-        Function that stops the chamber. Returns string with confirmation message from chamber
+        Stops the chamber.
+
+        Returns string with confirmation message from chamber
         """
+
         try:
             print('Turning off Environmental Chamber....\n')
             self.session = telnetlib.Telnet(self.HOST,self.PORT)            
@@ -121,6 +128,7 @@ class spirale3:
     def cancelTest(self,save):
         """
         End the test.
+
         You can choose whether to save the test records to memory or not by
         passing an integer 1 or 0 when calling cancelTest().
         
@@ -132,12 +140,13 @@ class spirale3:
         eg.
         - To end test without saving the test records to the chamber's local 
         memory:
+
         mychamber.cancelTest(0)
 
         Returns string with confirmation message from chamber
         
-        
         """
+
         try:
             if save == 1:
                 print('Cancelling test and saving test records...')
@@ -164,10 +173,11 @@ class spirale3:
     
     def getTemperature(self):
         """
-        Function that gets the current chamber temperature.
+        Gets the current chamber temperature.
 
         Returns the current temperature as a floating point number
         """
+
         try:
             self.session = telnetlib.Telnet(self.HOST,self.PORT)
             #Send the command to read the current temperature
@@ -190,12 +200,12 @@ class spirale3:
     
     def setTemperature(self, setPoint,period):
         """
-        Function that sets the temperature of the chamber for a specific period of time.
+        Set temperature.
 
-        - Usage
+        Arguments:
 
-        -setPoint : temperature in degrees celcius.
-        -period : time period in seconds.
+        setPoint - temperature in degrees celcius.
+        period - time period in seconds.
 
         eg, Set the chamber to ramp to 25 degrees over 5 minutes.
 
@@ -204,8 +214,8 @@ class spirale3:
         mychamber.setTemperature(25,300)
 
         Returns string with confirmation message from chamber
-
         """
+
         try:
             self.setPoint = str(setPoint)+'>'+str(period)
             print('Setting Environmental Chamber to: '+self.setPoint)
@@ -287,19 +297,17 @@ class spirale3:
 
     def pauseCycle(self,pause):
         """
-        End the test.
-        You can choose whether to save the test records to memory or not by
-        passing an integer 1 or 0 when calling cancelTest().
+        Pause/Resume current temperature cycle.
         
         eg.
-        - To end test and save the test records to the chamber's local memory:
+        - To pause test:
             
-        mychamber.cancelTest(1)
+        mychamber.pauseCycle(1)
         
         eg.
-        - To end test without saving the test records to the chamber's local 
-        memory:
-        mychamber.cancelTest(0)
+        - To resume test:
+        
+        mychamber.pauseCycle(0)
 
         Returns string with confirmation message from chamber
         
